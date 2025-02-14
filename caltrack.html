@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calorie & Protein Tracker</title>
+    <link rel="icon" type="image/png" href="caltrack.png">
     <style>
         body {
             background-color: #121212;
@@ -44,12 +45,14 @@
     <input type="text" id="meal" placeholder="Meal Name">
     <input type="number" id="calories" placeholder="Calories">
     <input type="number" id="protein" placeholder="Protein (g)">
-    <button onclick="addEntry()">Add</button>
-    <button onclick="resetData()">Reset</button>
+    <button title="Add entry to the list" onclick="addEntry()">➕</button>
+    <button title="Reset all entries" onclick="resetData()">🔄</button>
+    <button title="Save entry for quick selection" onclick="addToQuickItems()">💾</button>
     
     <h2>Quick Add Items</h2>
     <select id="quickItems"></select>
-    <button onclick="quickAdd()">Quick Add</button>
+    <button title="Add selected quick item" onclick="quickAdd()">⚡</button>
+    <button title="Remove selected quick item" onclick="removeQuickItem()">❌</button>
     
     <table>
         <thead>
@@ -57,7 +60,7 @@
                 <th>Meal</th>
                 <th>Calories (<span id="totalCalories">0</span>)</th>
                 <th>Protein (g) (<span id="totalProtein">0</span>)</th>
-                <th>Action</th>
+                <th>Manage</th>
             </tr>
         </thead>
         <tbody id="entryTable"></tbody>
@@ -79,7 +82,7 @@
                     <td>${entry.meal}</td>
                     <td>${entry.calories}</td>
                     <td>${entry.protein}</td>
-                    <td><button onclick="deleteEntry(${index})">❌</button></td>
+                    <td><button title="Remove this entry from the list" onclick="deleteEntry(${index})">❌</button></td>
                 </tr>`;
                 table.innerHTML += row;
             });
@@ -129,10 +132,24 @@
             }
         }
 
-        function addQuickItem(meal, calories, protein) {
-            quickItems.push({ meal, calories, protein });
-            localStorage.setItem("quickItems", JSON.stringify(quickItems));
-            renderQuickItems();
+        function addToQuickItems() {
+            let meal = document.getElementById("meal").value;
+            let calories = document.getElementById("calories").value;
+            let protein = document.getElementById("protein").value;
+            if (meal && calories && protein) {
+                quickItems.push({ meal, calories, protein });
+                localStorage.setItem("quickItems", JSON.stringify(quickItems));
+                renderQuickItems();
+            }
+        }
+
+        function removeQuickItem() {
+            let index = document.getElementById("quickItems").value;
+            if (index !== "") {
+                quickItems.splice(index, 1);
+                localStorage.setItem("quickItems", JSON.stringify(quickItems));
+                renderQuickItems();
+            }
         }
 
         renderTable();
