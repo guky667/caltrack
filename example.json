@@ -1,0 +1,106 @@
+[
+    {
+        "category":"Drinks",
+        "items":[
+            {
+                "name": "☕&🥛",
+                "calories": "147",
+                "protein": "11",
+                "quantity": 1
+            },
+            {
+                "name": "Protein Shake",
+                "calories": "336",
+                "protein": "33.2",
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "category":"Meals",
+        "items":[
+            {
+                "name": "The Salad™️",
+                "calories": "482",
+                "protein": "44",
+                "quantity": 1
+            },
+            {
+                "name": "The Sauce™️",
+                "calories": "119",
+                "protein": "3",
+                "quantity": 1
+            },
+            {
+                "name": "Somon afumat",
+                "calories": 183,
+                "protein": 19.23,
+                "quantity": 1
+            },
+            {
+                "name": "Somon congelat",
+                "calories": "205",
+                "protein": "19.8",
+                "quantity": 1
+            },
+            {
+                "name": "🥚 fiert",
+                "calories": "68",
+                "protein": "5.5",
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "category":"Fruit",
+        "items":[
+            {
+                "name": "🍌",
+                "calories": "110",
+                "protein": "1",
+                "quantity": 1
+            },
+            {
+                "name": "🥝",
+                "calories": "55.51",
+                "protein": "1.04",
+                "quantity": 1
+            },
+            {
+                "name": "🍊",
+                "calories": "66",
+                "protein": "1.3",
+                "quantity": 1
+            },
+            {
+                "name": "🍏",
+                "calories": "95",
+                "protein": "1",
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "category":"Snacks",
+        "items":[
+            {
+                "name": "🍪🥥",
+                "calories": "45",
+                "protein": "0.89",
+                "quantity": 5
+            },
+            {
+                "name": "🍪🍫🍊",
+                "calories": "48.2",
+                "protein": "0.8",
+                "quantity": 5
+            },
+            {
+                "name": "🍪🍇🌳",
+                "calories": "42.8",
+                "protein": "0.75",
+                "quantity": 5
+            }
+        ]
+    }
+]
