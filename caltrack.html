@@ -38,15 +38,18 @@
         button:hover {
             background-color: #444;
         }
+        #calories, #protein, #quantity{
+            max-width: 5em;
+        }
     </style>
 </head>
 <body>
     <h1>Calorie & Protein Tracker</h1>
     <input type="text" id="meal" placeholder="Meal Name">
     <input type="number" min="0" id="calories" placeholder="Calories">
-    <input type="number" min="0" id="protein" placeholder="Protein (g)">
+    <input type="number" min="0" id="protein" placeholder="Protein">
     <input type="number" min="0" id="quantity" placeholder="Quantity" value="1">
-    <select id="category"></select>
+
     <button title="Save entry for quick selection" onclick="addToQuickItems()">💾</button>
     <button title="Reset all entries" onclick="confirmReset()">🔄</button>
     <button title="Add entry to the list" onclick="addEntry()">➕</button>
@@ -70,6 +73,16 @@
         <tbody id="entryTable"></tbody>
     </table>
     <script>
+        if (!localStorage.getItem("quickItems")) {
+            const defaultQuickItems = [
+                { "category": "Drinks", "items": [] },
+                { "category": "Meals", "items": [] },
+                { "category": "Fruit", "items": [] },
+                { "category": "Snacks", "items": [] }
+            ];
+            localStorage.setItem("quickItems", JSON.stringify(defaultQuickItems));
+        }
+
         let quickItems = JSON.parse(localStorage.getItem("quickItems")) || [];
         let entries = JSON.parse(localStorage.getItem("entries")) || [];
 
@@ -84,18 +97,16 @@
         enforcePositiveNumbers();
 
         function renderCategories() {
-            const categorySelect = document.getElementById("category");
             const quickCategorySelect = document.getElementById("quickCategory");
-            categorySelect.innerHTML = "";
             quickCategorySelect.innerHTML = "";
             if (!quickItems.length) return;
             quickItems.forEach((category, index) => {
                 let option = `<option value='${index}'>${category.category}</option>`;
-                categorySelect.innerHTML += option;
                 quickCategorySelect.innerHTML += option;
             });
             updateQuickItems(true);
         }
+
 
         function updateQuickItems(populateFirstItem = false) {
             const categoryIndex = document.getElementById("quickCategory").value;
@@ -117,8 +128,9 @@
             let calories = parseFloat(document.getElementById("calories").value);
             let protein = parseFloat(document.getElementById("protein").value);
             let quantity = parseFloat(document.getElementById("quantity").value);
-            let categoryIndex = document.getElementById("category").value;
+            let categoryIndex = document.getElementById("quickCategory").value; // Use quickCategory instead
             let category = quickItems[categoryIndex] ? quickItems[categoryIndex].category : "Unknown";
+
             if (name && !isNaN(calories) && !isNaN(protein) && !isNaN(quantity)) {
                 entries.push({ name, calories, protein, category, quantity });
                 localStorage.setItem("entries", JSON.stringify(entries));
@@ -126,6 +138,7 @@
                 document.getElementById("meal").focus();
             }
         }
+
 
         function renderTable() {
             const table = document.getElementById("entryTable");
@@ -156,7 +169,7 @@
             let calories = parseFloat(document.getElementById("calories").value);
             let protein = parseFloat(document.getElementById("protein").value);
             let quantity = parseFloat(document.getElementById("quantity").value);
-            let categoryIndex = document.getElementById("category").value;
+            let categoryIndex = document.getElementById("quickCategory").value;
 
             if (!name || isNaN(calories) || isNaN(protein) || isNaN(quantity)) {
                 alert("Please enter valid meal details before saving.");
@@ -182,7 +195,7 @@
                 document.getElementById("calories").value = item.calories;
                 document.getElementById("protein").value = item.protein;
                 document.getElementById("quantity").value = item.quantity;
-                document.getElementById("category").value = categoryIndex;
+                document.getElementById("quickCategory").value = categoryIndex;
             }
         }
 
