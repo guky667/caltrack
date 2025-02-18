@@ -1,7 +1,7 @@
 [
     {
-        "category":"Drinks",
-        "items":[
+        "category": "Drinks",
+        "items": [
             {
                 "name": "☕&🥛",
                 "calories": "147",
@@ -17,8 +17,8 @@
         ]
     },
     {
-        "category":"Meals",
-        "items":[
+        "category": "Meals",
+        "items": [
             {
                 "name": "The Salad™️",
                 "calories": "482",
@@ -58,8 +58,8 @@
         ]
     },
     {
-        "category":"Fruit",
-        "items":[
+        "category": "Fruit",
+        "items": [
             {
                 "name": "🍌",
                 "calories": "110",
@@ -87,8 +87,8 @@
         ]
     },
     {
-        "category":"Snacks",
-        "items":[
+        "category": "Snacks",
+        "items": [
             {
                 "name": "🍪🥥",
                 "calories": "45",
