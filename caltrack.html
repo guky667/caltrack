@@ -73,6 +73,8 @@
         <tbody id="entryTable"></tbody>
     </table>
     <script>
+        console.log({version: 1.0})
+
         if (!localStorage.getItem("quickItems")) {
             const defaultQuickItems = [
                 { "category": "Drinks", "items": [] },
@@ -86,6 +88,10 @@
         let quickItems = JSON.parse(localStorage.getItem("quickItems")) || [];
         let entries = JSON.parse(localStorage.getItem("entries")) || [];
 
+        enforcePositiveNumbers();
+        renderCategories();
+        renderTable();
+
         function enforcePositiveNumbers() {
             document.querySelectorAll("input[type='number']").forEach(input => {
                 input.addEventListener("blur", () => {
@@ -93,8 +99,6 @@
                 });
             });
         }
-        
-        enforcePositiveNumbers();
 
         function renderCategories() {
             const quickCategorySelect = document.getElementById("quickCategory");
@@ -104,9 +108,9 @@
                 let option = `<option value='${index}'>${category.category}</option>`;
                 quickCategorySelect.innerHTML += option;
             });
+
             updateQuickItems(true);
         }
-
 
         function updateQuickItems(populateFirstItem = false) {
             const categoryIndex = document.getElementById("quickCategory").value;
@@ -119,6 +123,7 @@
             });
             if (populateFirstItem) {
                 document.getElementById("quickItems").value = "0";
+
                 populateFields();
             }
         }
@@ -134,11 +139,12 @@
             if (name && !isNaN(calories) && !isNaN(protein) && !isNaN(quantity)) {
                 entries.push({ name, calories, protein, category, quantity });
                 localStorage.setItem("entries", JSON.stringify(entries));
+
                 renderTable();
+
                 document.getElementById("meal").focus();
             }
         }
-
 
         function renderTable() {
             const table = document.getElementById("entryTable");
@@ -203,6 +209,7 @@
             if (confirm("Are you sure you want to reset all entries? This action cannot be undone.")) {
                 entries = [];
                 localStorage.removeItem("entries");
+
                 renderTable();
             }
         }
@@ -213,21 +220,22 @@
             if (categoryIndex !== "" && itemIndex !== "" && confirm("Are you sure you want to remove this quick-add item?")) {
                 quickItems[categoryIndex].items.splice(itemIndex, 1);
                 localStorage.setItem("quickItems", JSON.stringify(quickItems));
+
                 updateQuickItems();
             }
+
+            populateFields();
         }
 
         function deleteEntry(index) {
             if (confirm("Are you sure you want to delete this entry?")) {
                 entries.splice(index, 1);
                 localStorage.setItem("entries", JSON.stringify(entries));
+
                 renderTable();
             }
         }
 
-
-        renderCategories();
-        renderTable();
     </script>
 </body>
 </html>
