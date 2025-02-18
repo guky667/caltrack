@@ -45,7 +45,7 @@
     <input type="text" id="meal" placeholder="Meal Name">
     <input type="number" min="0" id="calories" placeholder="Calories">
     <input type="number" min="0" id="protein" placeholder="Protein (g)">
-    <input type="number" min="1" id="quantity" placeholder="Quantity" value="1">
+    <input type="number" min="0" id="quantity" placeholder="Quantity" value="1">
     <select id="category"></select>
     <button title="Save entry for quick selection" onclick="addToQuickItems()">💾</button>
     <button title="Reset all entries" onclick="confirmReset()">🔄</button>
@@ -73,15 +73,30 @@
         let quickItems = JSON.parse(localStorage.getItem("quickItems")) || [];
         let entries = JSON.parse(localStorage.getItem("entries")) || [];
 
-        function enforcePositiveNumbers() {
-            document.querySelectorAll("input[type='number']").forEach(input => {
-                input.addEventListener("input", () => {
-                    input.value = input.value <= input.min ? input.min : input.value;
-                });
-            });
-        }
+        // function enforcePositiveNumbers() {
+        //     document.querySelectorAll("input[type='number']").forEach(input => {
+        //         input.addEventListener("input", () => {
+        //             let checkValue = input.value;
 
-        enforcePositiveNumbers();
+        //             // If the last character is ".", add a "0" but don't enforce min-value yet
+        //             if (checkValue.endsWith(".")) {
+        //                 checkValue += "0";
+        //             }
+
+        //             let numericValue = parseFloat(checkValue);
+        //             let minValue = parseFloat(input.min) || 0;
+
+        //             // Ensure the value doesn't go below min
+        //             if (isNaN(numericValue) || numericValue < minValue) {
+        //                 input.value = minValue;
+        //             } else {
+        //                 input.value = checkValue;
+        //             }
+        //         });
+        //     });
+        // }
+
+        // enforcePositiveNumbers();
 
         function renderCategories() {
             const categorySelect = document.getElementById("category");
