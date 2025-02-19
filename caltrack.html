@@ -64,16 +64,16 @@
             <tr>
                 <th>Meal</th>
                 <th>Category</th>
-                <th>Calories (<span id="totalCalories">0</span>)</th>
-                <th>Protein (<span id="totalProtein">0</span>)</th>
-                <th>Quantity</th>
+                <th>Cals<span id="totalCalories">0</span></th>
+                <th>Protein<span id="totalProtein">0</span></th>
+                <th>Qty</th>
                 <th>Manage</th>
             </tr>
         </thead>
         <tbody id="entryTable"></tbody>
     </table>
     <script>
-        console.log({version: 1.1})
+        console.log({version: 1.2})
 
         if (!localStorage.getItem("quickItems")) {
             const defaultQuickItems = [
@@ -166,8 +166,8 @@
                 </tr>`;
                 table.innerHTML += row;
             });
-            document.getElementById("totalCalories").innerText = Math.round(totalCalories, 2);
-            document.getElementById("totalProtein").innerText = Math.round(totalProtein, 2);
+            document.getElementById("totalCalories").innerText = totalCalories.toFixed(2);
+            document.getElementById("totalProtein").innerText = totalProtein.toFixed(2);
         }
 
         function addToQuickItems() {
