@@ -63,17 +63,16 @@
         <thead>
             <tr>
                 <th>Meal</th>
-                <th>Category</th>
-                <th>Cals<span id="totalCalories">0</span></th>
-                <th>Protein<span id="totalProtein">0</span></th>
-                <th>Qty</th>
-                <th>Manage</th>
+                <th>Cals <span id="totalCalories">0</span></th>
+                <th>Protein <span id="totalProtein">0</span></th>
+                <th>Quantity</th>
+                <th>Remove</th>
             </tr>
         </thead>
         <tbody id="entryTable"></tbody>
     </table>
     <script>
-        console.log({version: 1.2})
+        console.log({version: 1.3})
 
         if (!localStorage.getItem("quickItems")) {
             const defaultQuickItems = [
@@ -158,7 +157,6 @@
                 totalProtein += protein;
                 let row = `<tr>
                     <td>${entry.name}</td>
-                    <td>${entry.category}</td>
                     <td>${calories}</td>
                     <td>${protein}</td>
                     <td>${entry.quantity}</td>
@@ -206,7 +204,7 @@
         }
 
         function confirmReset() {
-            if (confirm("Are you sure you want to reset all entries? This action cannot be undone.")) {
+            if (confirm("Are you sure you want to reset all entries?")) {
                 entries = [];
                 localStorage.removeItem("entries");
 
