@@ -65,7 +65,7 @@
                 <th>Meal</th>
                 <th>Category</th>
                 <th>Calories (<span id="totalCalories">0</span>)</th>
-                <th>Protein (g) (<span id="totalProtein">0</span>)</th>
+                <th>Protein (<span id="totalProtein">0</span>)</th>
                 <th>Quantity</th>
                 <th>Manage</th>
             </tr>
@@ -73,7 +73,7 @@
         <tbody id="entryTable"></tbody>
     </table>
     <script>
-        console.log({version: 1.0})
+        console.log({version: 1.1})
 
         if (!localStorage.getItem("quickItems")) {
             const defaultQuickItems = [
@@ -166,8 +166,8 @@
                 </tr>`;
                 table.innerHTML += row;
             });
-            document.getElementById("totalCalories").innerText = totalCalories;
-            document.getElementById("totalProtein").innerText = totalProtein;
+            document.getElementById("totalCalories").innerText = Math.round(totalCalories, 2);
+            document.getElementById("totalProtein").innerText = Math.round(totalProtein, 2);
         }
 
         function addToQuickItems() {
