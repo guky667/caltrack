@@ -10,8 +10,8 @@
             },
             {
                 "name": "Protein Shake",
-                "calories": "336",
-                "protein": "33.2",
+                "calories": "312",
+                "protein": "28.4",
                 "quantity": 1
             }
         ]
@@ -21,13 +21,13 @@
         "items": [
             {
                 "name": "The Salad™️",
-                "calories": "482",
-                "protein": "44",
+                "calories": "157",
+                "protein": "25",
                 "quantity": 1
             },
             {
                 "name": "The Sauce™️",
-                "calories": "119",
+                "calories": "37",
                 "protein": "3",
                 "quantity": 1
             },
@@ -91,20 +91,20 @@
         "items": [
             {
                 "name": "🍪🥥",
-                "calories": "45",
-                "protein": "0.89",
+                "calories": 4.49,
+                "protein": 0.89,
                 "quantity": 5
             },
             {
                 "name": "🍪🍫🍊",
-                "calories": "48.2",
-                "protein": "0.8",
+                "calories": 48.2,
+                "protein": 0.8,
                 "quantity": 5
             },
             {
                 "name": "🍪🍇🌳",
-                "calories": "42.8",
-                "protein": "0.75",
+                "calories": 42.7,
+                "protein": 0.75,
                 "quantity": 5
             }
         ]
