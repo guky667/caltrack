@@ -6,13 +6,15 @@
                 "name": "☕&🥛",
                 "calories": "147",
                 "protein": "11",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             },
             {
                 "name": "Protein Shake",
                 "calories": "312",
                 "protein": "28.4",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             }
         ]
     },
@@ -23,37 +25,43 @@
                 "name": "The Salad™️",
                 "calories": "157",
                 "protein": "25",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             },
             {
                 "name": "The Sauce™️",
                 "calories": "37",
                 "protein": "3",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             },
             {
                 "name": "Somon afumat",
                 "calories": 183,
                 "protein": 19.23,
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             },
             {
                 "name": "Somon congelat",
                 "calories": "205",
                 "protein": "19.8",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             },
             {
                 "name": "🥚 fiert",
                 "calories": "68",
                 "protein": "5.5",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             },
             {
                 "name": "🐔🍗",
                 "calories": "165",
                 "protein": "22.49",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             }
         ]
     },
@@ -64,25 +72,29 @@
                 "name": "🍌",
                 "calories": "110",
                 "protein": "1",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             },
             {
                 "name": "🥝",
                 "calories": "55.51",
                 "protein": "1.04",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             },
             {
                 "name": "🍊",
                 "calories": "66",
                 "protein": "1.3",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             },
             {
                 "name": "🍏",
                 "calories": "95",
                 "protein": "1",
-                "quantity": 1
+                "quantity": 1,
+                "description": ""
             }
         ]
     },
@@ -93,19 +105,22 @@
                 "name": "🍪🥥",
                 "calories": 4.49,
                 "protein": 0.89,
-                "quantity": 5
+                "quantity": 5,
+                "description": ""
             },
             {
                 "name": "🍪🍫🍊",
                 "calories": 48.2,
                 "protein": 0.8,
-                "quantity": 5
+                "quantity": 5,
+                "description": ""
             },
             {
                 "name": "🍪🍇🌳",
                 "calories": 42.7,
                 "protein": 0.75,
-                "quantity": 5
+                "quantity": 5,
+                "description": ""
             }
         ]
     }
