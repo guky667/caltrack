@@ -41,6 +41,34 @@
         #calories, #protein, #quantity{
             max-width: 5em;
         }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 5px;
+            position: absolute;
+            z-index: 100;
+            white-space: nowrap;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip .tooltip-text:empty {
+            display: none; /* Hides tooltip if there's no text */
+        }
     </style>
 </head>
 <body>
@@ -50,14 +78,27 @@
     <input type="number" min="0" id="protein" placeholder="Protein">
     <input type="number" min="0" id="quantity" placeholder="Quantity" value="1">
 
-    <button title="Save entry for quick selection" onclick="addToQuickItems()">💾</button>
-    <button title="Reset all entries" onclick="confirmReset()">🔄</button>
-    <button title="Add entry to the list" onclick="addEntry()">➕</button>
+    <span class="tooltip">
+        <button onclick="addToQuickItems()">💾</button>
+        <span class="tooltip-text">Save entry for quick selection</span>
+    </span>
+    <span class="tooltip">
+        <button onclick="confirmReset()">🔄</button>
+        <span class="tooltip-text">Reset all entries</span>
+    </span>
+    <span class="tooltip">
+        <button onclick="addEntry()">➕</button>
+        <span class="tooltip-text">Add entry to the list</span>
+    </span>
     
     <h2>Quick Add Items</h2>
     <select id="quickCategory" onchange="updateQuickItems(true)"></select>
     <select id="quickItems" onchange="populateFields()"></select>
-    <button title="Remove selected quick item" onclick="confirmRemoveQuickItem()">❌</button>
+    <span class="tooltip">
+        <button onclick="confirmRemoveQuickItem()">❌</button>
+        <span class="tooltip-text">Remove selected quick item</span>
+    </span>
+   
     
     <table>
         <thead>
@@ -66,7 +107,7 @@
                 <th>Cals <span id="totalCalories">0</span></th>
                 <th>Protein <span id="totalProtein">0</span></th>
                 <th>Quantity</th>
-                <th>Remove</th>
+                <th>Manage</th>
             </tr>
         </thead>
         <tbody id="entryTable"></tbody>
@@ -171,7 +212,17 @@
                     <td>${calories}</td>
                     <td>${protein}</td>
                     <td>${entry.quantity}</td>
-                    <td><button title="Remove this entry from the list" onclick="deleteEntry(${index})">❌</button></td>
+                    <td>
+                        <span class="tooltip">
+                            <button onclick="deleteEntry(${index})" style="scale: 0.75">❌</button>
+                            <span class="tooltip-text">Remove this entry from the list</span>
+                        </span>
+                        
+                        <span class="tooltip" style="scale: 1.5">
+                            ℹ️
+                            <span class="tooltip-text">${entry.description || ''}</span>
+                        </span>
+                    </td>
                 </tr>`;
                 table.innerHTML += row;
             });
