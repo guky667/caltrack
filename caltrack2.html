@@ -179,13 +179,16 @@
 
     function cutItem(id, location){
         if(confirm('You sure?')){
-            let targetItems = JSON.parse(localStorage.getItem(location)) || [];
-            targetItems = targetItems.filter(item => item.id !== id);
-            localStorage.setItem(location, JSON.stringify(targetItems));
-        }
+            if(confirm('Super sure?!?')){
+                let targetItems = JSON.parse(localStorage.getItem(location)) || [];
+                targetItems = targetItems.filter(item => item.id !== id);
+                localStorage.setItem(location, JSON.stringify(targetItems));
 
-        render();
+                render();
+            }
+        }
     }
 
+    console.log('v1.0.0')
     render();
 </script>
