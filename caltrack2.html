@@ -71,14 +71,11 @@
 
         for(let activeItem of activeItems){
             let dateObj = new Date(activeItem.id); 
-            let localDate = dateObj.toLocaleDateString();
             let localTime = dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
-            let formattedDate = `${localDate} ${localTime}`; // Combine them
 
             let activeItemRow = `
                 <tr>
-                    <td>${formattedDate}</td>
+                    <td>${localTime}</td>
                     <td>${activeItem.item}</td>
                     <td>${parseFloat(activeItem.calories).toFixed(2)}</td>
                     <td>${parseFloat(activeItem.protein).toFixed(2)}</td>
