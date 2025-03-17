@@ -69,6 +69,18 @@
         .tooltip .tooltip-text:empty {
             display: none; /* Hides tooltip if there's no text */
         }
+
+        #quickItemModal{
+            background: #333;
+            color: #fff;
+        }
+
+        #closeModal{
+            position: absolute;
+            top: 1em;
+            right: 1em;
+        }
+
     </style>
 </head>
 <body>
@@ -91,7 +103,12 @@
         <span class="tooltip-text">Add entry to the list</span>
     </span>
     
+
     <h2>Quick Add Items</h2>
+    <span class="tooltip">
+        <button onclick="openQuickItemModal()">📝</button>
+        <span class="tooltip-text">Manage Quick Items</span>
+    </span>
     <select id="quickCategory" onchange="updateQuickItems(true)"></select>
     <select id="quickItems" onchange="populateFields()"></select>
     <span class="tooltip">
@@ -186,9 +203,10 @@
             let quantity = parseFloat(document.getElementById("quantity").value);
             let categoryIndex = document.getElementById("quickCategory").value; // Use quickCategory instead
             let category = quickItems[categoryIndex] ? quickItems[categoryIndex].category : "Unknown";
+            let description = quickItems[categoryIndex] ? quickItems[categoryIndex].items.find(i => i.name === name).description : "";
 
             if (name && !isNaN(calories) && !isNaN(protein) && !isNaN(quantity)) {
-                entries.push({ name, calories, protein, category, quantity });
+                entries.push({ name, calories, protein, category, quantity, description });
                 localStorage.setItem("entries", JSON.stringify(entries));
 
                 renderTable();
@@ -296,6 +314,152 @@
             }
         }
 
+        function openQuickItemModal() {
+            const modal = document.getElementById("quickItemModal");
+            modal.showModal(); // Use built-in dialog functionality
+            
+            populateCategoryManager();
+            populateQuickItemsTable();
+        }
+
+        function closeQuickItemModal() {
+            const modal = document.getElementById("quickItemModal");
+            modal.close(); // Ensures proper closing
+        }
+
+        function populateCategoryManager() {
+            const categorySelect = document.getElementById("categoryManager");
+            categorySelect.innerHTML = "";
+
+            quickItems.forEach((category, index) => {
+                let option = `<option value='${index}'>${category.category}</option>`;
+                categorySelect.innerHTML += option;
+            });
+
+            // Add "New Category..." option
+            categorySelect.innerHTML += `<option value="new">New Category...</option>`;
+        }
+
+        function populateQuickItemsTable() {
+            const tableBody = document.getElementById("quickItemsTable");
+            tableBody.innerHTML = "";
+
+            let filteredCategory = document.getElementById("categoryManager").value;
+            let filterActive = document.getElementById("filterCheckbox").checked;
+
+            quickItems.forEach((category, catIndex) => {
+                if (filterActive && filteredCategory !== catIndex.toString()) return;
+
+                category.items.forEach((item, itemIndex) => {
+                    let row = `<tr>
+                        <td><input type="text" value="${item.name}" onchange="updateItem(${catIndex}, ${itemIndex}, 'name', this.value)"></td>
+                        <td><input type="number" value="${item.calories}" min="0" onchange="updateItem(${catIndex}, ${itemIndex}, 'calories', this.value)"></td>
+                        <td><input type="number" value="${item.protein}" min="0" onchange="updateItem(${catIndex}, ${itemIndex}, 'protein', this.value)"></td>
+                        <td><input type="number" value="${item.quantity}" min="1" onchange="updateItem(${catIndex}, ${itemIndex}, 'quantity', this.value)"></td>
+                        <td><input type="text" value="${item.description || ''}" onchange="updateItem(${catIndex}, ${itemIndex}, 'description', this.value)"></td>
+                        <td><button onclick="deleteItem(${catIndex}, ${itemIndex})">Delete</button></td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            });
+        }
+
+
+        function updateCategory() {
+            let categoryIndex = document.getElementById("categoryManager").value;
+            let newName = document.getElementById("categoryNameInput").value.trim();
+
+            if (!newName) {
+                alert("Category name cannot be empty.");
+                return;
+            }
+
+            if (categoryIndex === "new") {
+                quickItems.push({ category: newName, items: [] });
+            } else {
+                let oldName = quickItems[categoryIndex].category;
+                quickItems[categoryIndex].category = newName;
+
+                // Update all items that had the old category name
+                quickItems.forEach(category => {
+                    category.items.forEach(item => {
+                        if (item.category === oldName) {
+                            item.category = newName;
+                        }
+                    });
+                });
+            }
+
+            localStorage.setItem("quickItems", JSON.stringify(quickItems));
+            populateCategoryManager();
+            populateQuickItemsTable();
+        }
+
+        function deleteCategory() {
+            let categoryIndex = document.getElementById("categoryManager").value;
+
+            if (categoryIndex === "new") {
+                alert("Cannot delete 'New Category...'");
+                return;
+            }
+
+            if (!confirm("Are you sure you want to delete this category? This will also delete all its items!")) {
+                return;
+            }
+
+            quickItems.splice(categoryIndex, 1);
+            localStorage.setItem("quickItems", JSON.stringify(quickItems));
+
+            populateCategoryManager();
+            populateQuickItemsTable();
+        }
+
+
+        function updateItem(catIndex, itemIndex, property, value) {
+            quickItems[catIndex].items[itemIndex][property] = value;
+            localStorage.setItem("quickItems", JSON.stringify(quickItems));
+        }
+
+        function deleteItem(catIndex, itemIndex) {
+            if (!confirm("Are you sure you want to delete this item?")) return;
+            quickItems[catIndex].items.splice(itemIndex, 1);
+            localStorage.setItem("quickItems", JSON.stringify(quickItems));
+            populateQuickItemsTable();
+        }
+
     </script>
+
+    <!-- Quick Item Management Modal -->
+    <dialog id="quickItemModal">
+        <button id="closeModal" onclick="closeQuickItemModal()">Close</button>
+        <h2>Manage Quick Items</h2>
+
+        <!-- Category Manager -->
+        <label>
+            <input type="checkbox" id="filterCheckbox"> Filter by Selected Category
+        </label>
+        <select id="categoryManager"></select>
+        <input type="text" id="categoryNameInput" placeholder="Edit Category Name">
+        <button onclick="updateCategory()">Update</button>
+        <button onclick="deleteCategory()">Delete</button>
+
+        <hr>
+
+        <!-- Quick Items Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Calories</th>
+                    <th>Protein</th>
+                    <th>Quantity</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="quickItemsTable"></tbody>
+        </table>
+    </dialog>
+
 </body>
 </html>

@@ -1,0 +1,192 @@
+<style>
+    html{
+        padding-top: 1em;
+        background: #333;
+        color: #FFF;
+    }
+    table {
+        border-collapse: collapse;
+        max-height: 95vh; 
+        overflow-y: auto; 
+        display: block;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        padding: 0.5em;
+    }
+
+    tr:nth-child(even) {
+        background-color: #444;
+    }
+
+    #tableContainer{
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    #userInput{
+        display: flex;
+        align-self: flex-start;
+        height: 2em;
+        padding-bottom: 1em;
+    }
+
+    .itemField{
+        width: 12em;
+    }
+    .inputField{
+        width: 5em;
+    }
+</style>
+
+<div id="tableContainer">
+    <table id="activeItems"></table>
+    <div>
+        <div id="userInput">
+            <input class="itemField" id="item" placeholder="Item">
+            <input class="inputField" id="calories" placeholder="Calories">
+            <input class="inputField" id="protein" placeholder="Protein">
+            <input class="inputField" id="quantity" placeholder="Quantity" value="1">
+            <button onclick="saveItem()">💾</button>
+            <button onclick="insertActiveItem()">➕</button>
+        </div>
+
+        <table id="savedItems"></table>
+    </div>
+</div>
+
+<script>
+    function render(){
+        let activeItems = JSON.parse(localStorage.getItem("activeItems")) || [];
+        let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
+
+        let activeItemsContents = "";
+        let savedItemsContents = "";
+
+        let caloriesTotal = 0;
+        let proteinTotal = 0;
+
+        for(let activeItem of activeItems){
+            let dateObj = new Date(activeItem.id); 
+            let localDate = dateObj.toLocaleDateString();
+            let localTime = dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+            let formattedDate = `${localDate} ${localTime}`; // Combine them
+
+            let activeItemRow = `
+                <tr>
+                    <td>${formattedDate}</td>
+                    <td>${activeItem.item}</td>
+                    <td>${parseFloat(activeItem.calories).toFixed(2)}</td>
+                    <td>${parseFloat(activeItem.protein).toFixed(2)}</td>
+                    <td>
+                        <button onclick="cutItem(${activeItem.id}, 'activeItems')">➖</button>
+                    </td>
+                </tr>
+            `;
+
+            caloriesTotal += parseFloat(parseFloat(activeItem.calories).toFixed(2));
+            proteinTotal += parseFloat(parseFloat(activeItem.protein).toFixed(2));
+
+            activeItemsContents += activeItemRow;
+        }
+
+        for(let savedItem of savedItems){
+            let savedItemRow = `
+                <tr>
+                    <td>
+                        <button onclick="insertSavedItem(${savedItem.id})">➕</button>
+                    </td>
+                    <td>${savedItem.item}</td>
+                    <td>${parseFloat(savedItem.calories).toFixed(2)}</td>
+                    <td>${parseFloat(savedItem.protein).toFixed(2)}</td>
+                    <td>
+                        <button onclick="cutItem(${savedItem.id}, 'savedItems')">➖</button>
+                    </td>
+                </tr>
+            `;
+
+            savedItemsContents += savedItemRow;
+        }
+
+        let activeItemsHeader = `
+            <tr>
+                <th>Time</th>
+                <th>Item</th>
+                <th>Calories: ${parseFloat(caloriesTotal).toFixed(2)}</th>
+                <th>Protein: ${parseFloat(proteinTotal).toFixed(2)}</th>
+                <th>Cut</th>
+            </tr>
+        `;
+
+        let savedItemsHeader = `
+            <tr>
+                <th>Add</th>
+                <th>Item</th>
+                <th>Calories</th>
+                <th>Protein</th>
+                <th>Cut</th>
+            </tr>
+        `;
+
+        let activeItemsTable = document.getElementById("activeItems");
+        let savedItemsTable = document.getElementById("savedItems");
+
+        activeItemsTable.innerHTML = activeItemsHeader + activeItemsContents;
+        savedItemsTable.innerHTML = savedItemsHeader + savedItemsContents;
+    }
+
+    function saveItem(){
+        let id = Date.now();
+        let item = document.getElementById("item").value.trim();
+        let calories = parseFloat(parseFloat(document.getElementById("calories").value).toFixed(2));
+        let protein = parseFloat(parseFloat(document.getElementById("protein").value).toFixed(2));
+
+        let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
+        savedItems.push({ id, item, calories, protein });
+        localStorage.setItem("savedItems", JSON.stringify(savedItems));
+
+        render();
+    }
+
+    function insertSavedItem(id){
+        let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
+        let savedItem = savedItems.find(item => item.id === id);
+
+        document.getElementById("item").value = savedItem.item;
+        document.getElementById("calories").value = savedItem.calories;
+        document.getElementById("protein").value = savedItem.protein;
+
+        render();
+    }
+
+    function insertActiveItem(){
+        let id = Date.now();
+        let item = document.getElementById("item").value.trim() || "Air";
+        let calories = document.getElementById("calories").value || 0;
+        let protein = document.getElementById("protein").value || 0;
+        let quantity = document.getElementById("quantity").value || 1;
+
+        calories = (parseFloat(calories) * parseFloat(quantity)).toFixed(2);
+        protein = (parseFloat(protein) * parseFloat(quantity)).toFixed(2)
+
+        let activeItems = JSON.parse(localStorage.getItem("activeItems")) || [];
+        activeItems.push({id, item, calories, protein});
+        localStorage.setItem("activeItems", JSON.stringify(activeItems));
+
+        render();
+    }
+
+    function cutItem(id, location){
+        if(confirm('You sure?')){
+            let targetItems = JSON.parse(localStorage.getItem(location)) || [];
+            targetItems = targetItems.filter(item => item.id !== id);
+            localStorage.setItem(location, JSON.stringify(targetItems));
+        }
+
+        render();
+    }
+
+    render();
+</script>
