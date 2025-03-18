@@ -33,6 +33,11 @@
         height: 2em;
         padding-bottom: 1em;
     }
+    #categories{
+        height: 2em;
+        width: 13em;
+        margin-bottom: 1em;
+    }
 
     .itemField{
         width: 12em;
@@ -55,15 +60,46 @@
             <button onclick="insertActiveItem()">➕</button>
         </div>
 
+        <div>
+            <select id="categories" onchange="render()"></select>
+            <button onclick="removeCategory()">➖</button>
+            <button onclick="addCategory()">➕</button>
+        </div>
+        
+
         <table id="savedItems"></table>
     </div>
 </div>
 
 <script>
+    function init(){
+        console.log('v1.0.2');
+
+        let activeItems = JSON.parse(localStorage.getItem("activeItems"));
+        let savedItems = JSON.parse(localStorage.getItem("savedItems"));
+        let categories = JSON.parse(localStorage.getItem("categories"));
+
+        if(activeItems === null){
+            localStorage.setItem("activeItems", JSON.stringify([]));
+        }
+
+        if(savedItems === null){
+            localStorage.setItem("savedItems", JSON.stringify([]));
+        }
+
+        if(categories === null){
+            localStorage.setItem("categories", JSON.stringify(['All']));
+        }
+        renderCategories();
+
+        render();
+    }
+
     function render(){
         let activeItems = JSON.parse(localStorage.getItem("activeItems")) || [];
         let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
-
+        let activeCategory = document.getElementById("categories").value;
+        
         let activeItemsContents = "";
         let savedItemsContents = "";
 
@@ -93,22 +129,24 @@
         }
 
         for(let savedItem of savedItems){
-            let savedItemRow = `
-                <tr>
-                    <td>
-                        <button onclick="insertSavedItem(${savedItem.id})">➕</button>
-                    </td>
-                    <td>${savedItem.item}</td>
-                    <td>${parseFloat(savedItem.calories).toFixed(2)}</td>
-                    <td>${parseFloat(savedItem.protein).toFixed(2)}</td>
-                    <td>${parseFloat(savedItem.quantity || 1).toFixed(2)}</td>
-                    <td>
-                        <button onclick="cutItem(${savedItem.id}, 'savedItems')">➖</button>
-                    </td>
-                </tr>
-            `;
+            if( [null, '', 'All'].includes(activeCategory) || activeCategory === savedItem.category){
+                let savedItemRow = `
+                    <tr>
+                        <td>
+                            <button onclick="insertSavedItem(${savedItem.id})">➕</button>
+                        </td>
+                        <td>${savedItem.item}</td>
+                        <td>${parseFloat(savedItem.calories).toFixed(2)}</td>
+                        <td>${parseFloat(savedItem.protein).toFixed(2)}</td>
+                        <td>${parseFloat(savedItem.quantity || 1).toFixed(2)}</td>
+                        <td>
+                            <button onclick="cutItem(${savedItem.id}, 'savedItems')">➖</button>
+                        </td>
+                    </tr>
+                `;
 
-            savedItemsContents += savedItemRow;
+                savedItemsContents += savedItemRow;
+            }
         }
 
         let activeItemsHeader = `
@@ -145,9 +183,10 @@
         let calories = parseFloat(parseFloat(document.getElementById("calories").value || 0).toFixed(2));
         let protein = parseFloat(parseFloat(document.getElementById("protein").value || 0).toFixed(2));
         let quantity = parseFloat(parseFloat(document.getElementById("quantity").value || 1).toFixed(2));
+        let category = document.getElementById("category").value.trim();
 
         let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
-        savedItems.push({ id, item, calories, protein, quantity });
+        savedItems.push({ id, item, calories, protein, quantity, category });
         localStorage.setItem("savedItems", JSON.stringify(savedItems));
 
         render();
@@ -202,6 +241,56 @@
         }
     }
 
-    console.log('v1.0.1');
-    render();
+    function addCategory(){
+        let categories = JSON.parse(localStorage.getItem("categories")) || [];
+
+        const newCategory = prompt("Add new category:");
+
+        if(newCategory && !categories.includes(newCategory)){
+            categories.push(newCategory);
+            localStorage.setItem("categories", JSON.stringify(categories));
+
+            renderCategories();
+            render();
+        }
+        else{
+            if(newCategory === null){
+                // category name can't be empty
+            }
+            else if(categories.includes(newCategory)){
+                // there's already a category with this name
+            }
+        }
+    }
+
+    function removeCategory(){
+        if(confirm('Are you sure you want to delete this category?')){
+            let activeCategory = document.getElementById("categories");
+            if(activeCategory !== null || activeCategory !== 'All'){
+                let categories = JSON.parse(localStorage.getItem("categories"));
+                categories = categories.filter();
+                localStorage.setItem("categories", JSON.stringify(categories));
+
+                render();
+            };
+        };
+    }
+
+    function renderCategories(){
+        let categories = JSON.parse(localStorage.getItem("categories")) || ['All'];
+        let categoriesContents = "";
+
+        for(let category of categories){
+            let categoryOption = `
+                <option value="${category}">${category}</option>
+            `;
+
+            categoriesContents += categoryOption;
+        }
+
+        let categoriesOptions = document.getElementById("categories");
+        categoriesOptions.innerHTML = categoriesContents;
+    }
+
+    init();
 </script>
