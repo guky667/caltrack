@@ -99,7 +99,7 @@
         let activeItems = JSON.parse(localStorage.getItem("activeItems")) || [];
         let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
         let activeCategory = document.getElementById("categories").value;
-        
+
         let activeItemsContents = "";
         let savedItemsContents = "";
 
@@ -246,31 +246,33 @@
 
         const newCategory = prompt("Add new category:");
 
-        if(newCategory && !categories.includes(newCategory)){
-            categories.push(newCategory);
-            localStorage.setItem("categories", JSON.stringify(categories));
-
-            renderCategories();
-            render();
-        }
-        else{
-            if(newCategory === null){
-                // category name can't be empty
+        if(newCategory){
+            if(newCategory === null || newCategory === ''){
+                alert(`Category name can't be empty`);
             }
             else if(categories.includes(newCategory)){
-                // there's already a category with this name
+                alert(`That category name already exists`);
+            }
+            else{
+                categories.push(newCategory);
+                localStorage.setItem("categories", JSON.stringify(categories));
+
+                renderCategories();
+                render();
             }
         }
     }
 
     function removeCategory(){
         if(confirm('Are you sure you want to delete this category?')){
-            let activeCategory = document.getElementById("categories");
-            if(activeCategory !== null || activeCategory !== 'All'){
+            let activeCategory = document.getElementById("categories").value;
+            if(![null, '', 'All'].includes(activeCategory)){
                 let categories = JSON.parse(localStorage.getItem("categories"));
-                categories = categories.filter();
+                console.log(categories)
+                categories = categories.filter(savedCategory => savedCategory !== activeCategory);
                 localStorage.setItem("categories", JSON.stringify(categories));
 
+                renderCategories();
                 render();
             };
         };
