@@ -73,7 +73,7 @@
 
 <script>
     function init(){
-        console.log('v1.0.3');
+        console.log('v1.0.4');
 
         let activeItems = JSON.parse(localStorage.getItem("activeItems"));
         let savedItems = JSON.parse(localStorage.getItem("savedItems"));
@@ -183,7 +183,7 @@
         let calories = parseFloat(parseFloat(document.getElementById("calories").value || 0).toFixed(2));
         let protein = parseFloat(parseFloat(document.getElementById("protein").value || 0).toFixed(2));
         let quantity = parseFloat(parseFloat(document.getElementById("quantity").value || 1).toFixed(2));
-        let category = document.getElementById("category").value.trim();
+        let category = document.getElementById("categories").value.trim();
 
         let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
         savedItems.push({ id, item, calories, protein, quantity, category });
