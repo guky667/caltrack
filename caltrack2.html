@@ -141,9 +141,10 @@
         let item = document.getElementById("item").value.trim();
         let calories = parseFloat(parseFloat(document.getElementById("calories").value).toFixed(2));
         let protein = parseFloat(parseFloat(document.getElementById("protein").value).toFixed(2));
+        let quantity = parseFloat(parseFloat(document.getElementById("quantity").value).toFixed(2));
 
         let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
-        savedItems.push({ id, item, calories, protein });
+        savedItems.push({ id, item, calories, protein, quantity });
         localStorage.setItem("savedItems", JSON.stringify(savedItems));
 
         render();
@@ -156,6 +157,7 @@
         document.getElementById("item").value = savedItem.item;
         document.getElementById("calories").value = savedItem.calories;
         document.getElementById("protein").value = savedItem.protein;
+        document.getElementById("quantity").value = savedItem.quantity || 1;
 
         render();
     }
