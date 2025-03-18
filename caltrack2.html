@@ -51,6 +51,7 @@
             <input class="inputField" id="protein" placeholder="Protein">
             <input class="inputField" id="quantity" placeholder="Quantity" value="1">
             <button onclick="saveItem()">💾</button>
+            <button onclick="resetDay()">🔃</button>
             <button onclick="insertActiveItem()">➕</button>
         </div>
 
@@ -170,7 +171,7 @@
         let quantity = document.getElementById("quantity").value || 1;
 
         calories = (parseFloat(calories) * parseFloat(quantity)).toFixed(2);
-        protein = (parseFloat(protein) * parseFloat(quantity)).toFixed(2)
+        protein = (parseFloat(protein) * parseFloat(quantity)).toFixed(2);
 
         let activeItems = JSON.parse(localStorage.getItem("activeItems")) || [];
         activeItems.push({id, item, calories, protein});
@@ -180,17 +181,25 @@
     }
 
     function cutItem(id, location){
-        if(confirm('You sure?')){
+        if(confirm('Are you sure you want to remove this item?')){
+            let targetItems = JSON.parse(localStorage.getItem(location)) || [];
+            targetItems = targetItems.filter(item => item.id !== id);
+            localStorage.setItem(location, JSON.stringify(targetItems));
+
+            render();
+        }
+    }
+
+    function resetDay(){
+        if(confirm('Are you sure you want to reset the day?')){
             if(confirm('Super sure?!?')){
-                let targetItems = JSON.parse(localStorage.getItem(location)) || [];
-                targetItems = targetItems.filter(item => item.id !== id);
-                localStorage.setItem(location, JSON.stringify(targetItems));
+                localStorage.setItem("activeItems", JSON.stringify([]));
 
                 render();
             }
         }
     }
 
-    console.log('v1.0.0')
+    console.log('v1.0.0');
     render();
 </script>
