@@ -10,6 +10,7 @@
         border-collapse: collapse;
         overflow-y: auto; 
         display: block;
+        padding-top:1em;
     }
 
     td, th {
@@ -47,7 +48,11 @@
 </style>
 
 <div id="tableContainer">
-    <table id="activeItems"></table>
+    <div>
+        <table id="timeTable"></table>
+        <table id="activeItems"></table>
+    </div>
+    
     <div>
         <div id="userInput">
             <input class="itemField" id="item" placeholder="Item">
@@ -72,8 +77,9 @@
 
 <script>
     function init(){
-        console.log('v1.1.1');
+        console.log('v1.1.2');
 
+        let timeTable = JSON.parse(localStorage.getItem("timeTable")) || [];
         let activeItems = JSON.parse(localStorage.getItem("activeItems"));
         let savedItems = JSON.parse(localStorage.getItem("savedItems"));
         let categories = JSON.parse(localStorage.getItem("categories"));
@@ -90,6 +96,7 @@
             localStorage.setItem("categories", JSON.stringify(['All']));
         }
 
+        document.getElementById("timeTable").innerHTML = `<tr>${timeTable.map(time => `<th>${time}</th>`).join('')}<tr>`
         renderActiveItems();
         renderSavedItems();
         renderCategories();
