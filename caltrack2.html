@@ -77,9 +77,9 @@
             let activeItemRow = `
                 <tr>
                     <td>${localTime}</td>
-                    <td>${activeItem.item}</td>
-                    <td>${parseFloat(activeItem.calories).toFixed(2)}</td>
-                    <td>${parseFloat(activeItem.protein).toFixed(2)}</td>
+                    <td>${activeItem.item || 'Air'}</td>
+                    <td>${parseFloat(activeItem.calories || 0).toFixed(2)}</td>
+                    <td>${parseFloat(activeItem.protein || 0).toFixed(2)}</td>
                     <td>
                         <button onclick="cutItem(${activeItem.id}, 'activeItems')">➖</button>
                     </td>
@@ -101,6 +101,7 @@
                     <td>${savedItem.item}</td>
                     <td>${parseFloat(savedItem.calories).toFixed(2)}</td>
                     <td>${parseFloat(savedItem.protein).toFixed(2)}</td>
+                    <td>${parseFloat(savedItem.quantity || 1).toFixed(2)}</td>
                     <td>
                         <button onclick="cutItem(${savedItem.id}, 'savedItems')">➖</button>
                     </td>
@@ -126,6 +127,7 @@
                 <th>Item</th>
                 <th>Calories</th>
                 <th>Protein</th>
+                <th>Qty.</th>
                 <th>Cut</th>
             </tr>
         `;
@@ -139,10 +141,10 @@
 
     function saveItem(){
         let id = Date.now();
-        let item = document.getElementById("item").value.trim();
-        let calories = parseFloat(parseFloat(document.getElementById("calories").value).toFixed(2));
-        let protein = parseFloat(parseFloat(document.getElementById("protein").value).toFixed(2));
-        let quantity = parseFloat(parseFloat(document.getElementById("quantity").value).toFixed(2));
+        let item = document.getElementById("item").value.trim() || 'Air';
+        let calories = parseFloat(parseFloat(document.getElementById("calories").value || 0).toFixed(2));
+        let protein = parseFloat(parseFloat(document.getElementById("protein").value || 0).toFixed(2));
+        let quantity = parseFloat(parseFloat(document.getElementById("quantity").value || 1).toFixed(2));
 
         let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
         savedItems.push({ id, item, calories, protein, quantity });
@@ -155,9 +157,9 @@
         let savedItems = JSON.parse(localStorage.getItem("savedItems")) || [];
         let savedItem = savedItems.find(item => item.id === id);
 
-        document.getElementById("item").value = savedItem.item;
-        document.getElementById("calories").value = savedItem.calories;
-        document.getElementById("protein").value = savedItem.protein;
+        document.getElementById("item").value = savedItem.item || 'Air';
+        document.getElementById("calories").value = savedItem.calories || 0;
+        document.getElementById("protein").value = savedItem.protein || 0;
         document.getElementById("quantity").value = savedItem.quantity || 1;
 
         render();
