@@ -51,6 +51,11 @@
     .hiddenButton:hover > button{
         visibility: visible;
     }
+
+    .loadDefaults{
+        position: relative;
+        left: 5em;
+    }
 </style>
 
 <div id="tableContainer">
@@ -74,6 +79,7 @@
             <select id="categories" onchange="renderSavedItems()"></select>
             <button onclick="removeCategory()">➖</button>
             <button onclick="addCategory()">➕</button>
+            <button onclick="loadDefaults()" class="loadDefaults">🔃</button>
         </div>
         
 
@@ -83,7 +89,7 @@
 
 <script>
     function init(){
-        console.log('v1.1.3');
+        console.log('v1.1.4');
 
         let timeTable = JSON.parse(localStorage.getItem("timeTable")) || [];
         let activeItems = JSON.parse(localStorage.getItem("activeItems"));
@@ -299,6 +305,22 @@
                 renderSavedItems();
             };
         };
+    }
+
+    function loadDefaults(){
+        const url = 'https://guky667.github.io/caltrack/example.json'
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                const savedItems = data.savedItems;
+                const categories = data.categories;
+
+                localStorage.setItem("savedItems", JSON.stringify(savedItems));
+                localStorage.setItem("categories", JSON.stringify(categories));
+
+                window.location.reload()
+            })
+            .catch(err => { });        
     }
 
     init();
