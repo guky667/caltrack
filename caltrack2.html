@@ -8,9 +8,9 @@
     }
     table {
         border-collapse: collapse;
-        overflow-y: auto; 
-        display: block;
-        padding-top:1em;
+        padding-top: 1em;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     td, th {
@@ -24,19 +24,19 @@
 
     #tableContainer{
         display: flex;
+        flex-direction: row;
         justify-content: space-evenly;
     }
 
     #userInput{
         display: flex;
-        align-self: flex-start;
+        justify-content: space-between;
         height: 2em;
-        padding-bottom: 1em;
+        margin-bottom: 1em;
     }
     #categories{
         height: 2em;
         width: 13em;
-        margin-bottom: 1em;
     }
 
     .itemField{
@@ -52,9 +52,52 @@
         visibility: visible;
     }
 
-    .loadDefaults{
-        position: relative;
-        left: 5em;
+    #inputs{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1em;
+        margin-top: 1em;
+    }
+
+    #buttons{
+        display: flex;
+        gap: 2em;
+    }
+
+    #activeItems{
+        margin-bottom: 1em;
+    }
+
+    @media (orientation: portrait) {
+        #tableContainer {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        #tableContainer > div {
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        tr{
+            height: 3em;
+        }
+
+        #categories{
+            width:40em;
+            height: 3em;
+        }
+
+        #userInput{
+            height: 3em;
+        }
+
+        tr button{
+            transform: translateX(3em)
+        }
     }
 </style>
 
@@ -75,11 +118,13 @@
             <button onclick="insertActiveItem()">➕</button>
         </div>
 
-        <div>
+        <div id="inputs">
             <select id="categories" onchange="renderSavedItems()"></select>
-            <button onclick="removeCategory()">➖</button>
-            <button onclick="addCategory()">➕</button>
-            <button onclick="loadDefaults()" class="loadDefaults">🔃</button>
+            <div id="buttons">
+                <button onclick="removeCategory()">➖</button>
+                <button onclick="addCategory()">➕</button>
+                <button onclick="loadDefaults()">🔃</button>
+            </div>
         </div>
         
 
@@ -89,7 +134,7 @@
 
 <script>
     function init(){
-        console.log('v1.1.4');
+        console.log('v1.2');
 
         let timeTable = JSON.parse(localStorage.getItem("timeTable")) || [];
         let activeItems = JSON.parse(localStorage.getItem("activeItems"));
