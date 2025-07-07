@@ -38,6 +38,9 @@
         height: 2em;
         width: 13em;
     }
+    #timeTable{
+        margin-bottom: 1em;
+    }
 
     .itemField{
         width: 12em;
@@ -93,10 +96,28 @@
 
         #userInput{
             height: 3em;
+            margin-right: 5em;
+            margin-bottom:5em;
+
+            button{
+                width: 6em;
+            }
+        }
+
+        #inputs{
+            margin-right: 5em;
+
+            button{
+                width: 6em;
+            }
         }
 
         tr button{
             transform: translateX(3em)
+        }
+
+        #buttons{
+            gap: 4em;
         }
     }
 </style>
@@ -134,7 +155,7 @@
 
 <script>
     function init(){
-        console.log('v1.2');
+        console.log('v1.2.1');
 
         let timeTable = JSON.parse(localStorage.getItem("timeTable")) || [];
         let activeItems = JSON.parse(localStorage.getItem("activeItems"));
